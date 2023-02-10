@@ -1,4 +1,5 @@
 module Lib where
+import Data.Char
 
 celsius :: Int -> Int
 celsius x = (x - 32) * 5 `div` 9
@@ -30,6 +31,40 @@ mayorDe3 x y z
             | y > z && z > x = x
             | x > y && y > z = x
 
+--Definir una funcion que dados tres numeros enteros devuelva el mayor de ellos. Se debe utilizar en la definicion de 
+--esta funcion otra funcion que calcule el maximo de dos numeros enteros
+maximoDos :: Int -> Int -> Int
+maximoDos x y = if x >= y then x else y
+
+mayorDeTres :: Int -> Int -> Int -> Int
+mayorDeTres x y = maximoDos x.maximoDos y
+
+mayorDeTres' :: Int -> Int -> Int -> Int
+mayorDeTres' x = maximoDos.maximoDos x
+
+
+--Definir una funcion que dados dos numeros devuelva una lista con el resultado de sumar, restar y multiplicar
+--ambos numeros
+listaOperaciones :: Int -> Int -> [Int]
+listaOperaciones x y = [x+y, x-y, x*y]
+
+--Definir una funcion que dadas dos cadenas de caracteres, si ambos tienen una longitud menor o igual a tres devolvera
+--su union, en otro caso devolvera una cadena vacia
+longCadenas :: [Char] -> [Char] -> [Char]
+longCadenas x y = if length x <= 3 && length y <=3 then x ++ y else [ ]
+--Tambien se puede hacer con String, que soy bobo
+
+--Definir una funcion que dada una frase devuelva una cadena formada unicamente por los caracteres en mayusculas
+listaMayus :: String -> String
+listaMayus x = [y | y <- x, isUpper y]
+
+abecedario :: String
+abecedario = [x | x <- "El perro de San Roque no tiene rabo", isUpper x]
+
+--(cabeza:resto) esto es una lista
+--[cabeza:resto] esto es una lista de listas
+--[x,y] lista limitada segun los elementos que indiquemos como variables
+
 
 --Tema 3 - Listado 0 - Ejercicio 1
 componer :: Int -> Int -> Int
@@ -42,13 +77,3 @@ sucesor x = x + 1
 --Tema 3 - Listado 0 - Ejercicio 3
 cuadruple :: Int -> Int
 cuadruple x = 2 * doble x
-
---Tema 3 - Listado 1 - Ejercicio 1
-ordenadosMenor :: Int -> Int -> Int -> Bool
-ordenadosMenor x y z
-                    | ((x < y) && (y < z)) = True
-                    | otherwise False
-                
---Tema 3 - Listado 1 - Ejercicio 2
-ordenarTupla :: (Int,Int,Int) -> (Int,Int,Int)
-ordenarTupla (x, y, z) = 
