@@ -30,3 +30,25 @@ mayorDe3 x y z
             | y > z && z > x = x
             | x > y && y > z = x
 
+
+--Tema 3 - Listado 0 - Ejercicio 1
+componer :: Int -> Int -> Int
+componer x y = x+y
+
+--Tema 3 - Listado 0 - Ejercicio 2
+sucesor :: Int -> Int
+sucesor x = x + 1
+
+--Tema 3 - Listado 0 - Ejercicio 3
+cuadruple :: Int -> Int
+cuadruple x = 2 * doble x
+
+--Tema 3 - Listado 1 - Ejercicio 1
+ordenadosMenor :: Int -> Int -> Int -> Bool
+ordenadosMenor x y z
+                    | ((x < y) && (y < z)) = True
+                    | otherwise False
+                
+--Tema 3 - Listado 1 - Ejercicio 2
+ordenarTupla :: (Int,Int,Int) -> (Int,Int,Int)
+ordenarTupla (x, y, z) = 
