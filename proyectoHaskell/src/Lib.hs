@@ -90,6 +90,29 @@ ordenarAlfabeto lista [] = ([],lista)
 ordenarAlfabeto [] lista = ([], lista)
 ordenarAlfabeto c1@(x:xs) c2@(y:ys) = if (toLower x) < (toLower y) then (c1,c2) else (c2,c1)
 
+--Definir una funcion recursiva que dadas una cadena y un caracter, cuente el numero de apariciones del caracter en cadena
+countChar :: Char -> String -> Int
+countChar _ [] = 0  -- Caso base: la cadena es vacía, no hay apariciones del caracter
+countChar c (x:xs)
+                    | c == x    = 1 + countChar c xs  -- El primer caracter de la cadena es igual al buscado, sumamos 1 y seguimos buscando en el resto
+                    | otherwise = countChar c xs     -- El primer caracter de la cadena es diferente al buscado, seguimos buscando en el resto
+
+--Definir una funcion recursiva que dada una lista de numeros enteros devuelva como resultado la suma de todos ellos
+sumaNumeros :: [Int] -> Int
+sumaNumeros [] = 0
+sumaNumeros (x:xs) = x + sumaNumeros xs
+
+sumaNumerosTail :: [Int] -> Int
+sumaNumerosTail lista = sumaTail 0 lista
+    where
+        sumaTail :: Int -> [Int] -> Int
+        sumaTail res [] = res
+        sumaTail res (x:xs) = sumaTail (res + x) xs
+
+
+--Foldr recorre de derecha a izquierda y foldl de izquierda a derecha la lista dada
+-- foldr = (w + (x + (y + (z + e) ) ) )
+-- foldl = ( ( ( (w + x) + y) + z) + e)
 
 --Tema 3 - Listado 0 - Ejercicio 1 
 componer :: Int -> Int -> Int
