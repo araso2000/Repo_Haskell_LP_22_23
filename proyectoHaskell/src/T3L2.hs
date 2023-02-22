@@ -130,10 +130,8 @@ listaPotencias :: [Int] -> [Int]
 listaPotencias lista = [y^x | y <- lista , x <- [((length lista) - 1)..0]]
 
 --Tema 3 - Listado 2 - Ejercicio 28
-esPerfecto :: Int -> Bool
-esPerfecto x = 
+--esPerfecto :: Int -> Bool
+--esPerfecto x = 
     
-listaPerfectos :: Int
-listaPerfectos n = take n [y | y <- [1..],]
-
-
+--listaPerfectos :: Int
+--listaPerfectos n = take n [y | y <- [1..],]

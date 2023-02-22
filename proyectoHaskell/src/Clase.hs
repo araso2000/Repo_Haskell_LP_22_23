@@ -114,3 +114,23 @@ sumaNumerosTail lista = sumaTail 0 lista
 --Foldr recorre de derecha a izquierda y foldl de izquierda a derecha la lista dada
 -- foldr = (w + (x + (y + (z + e) ) ) )
 -- foldl = ( ( ( (w + x) + y) + z) + e)
+
+--Definir una funcion que calcule la longitud de una lista de numeros enteros utilizando la funcion de plegado foldr
+--funciones anonimas
+longListaPlegado :: [Int] -> Int
+longListaPlegado lista = foldr (\_ n -> n + 1) 0 lista
+
+--Definir una funcion en haskell que reciba una lista de funciones que se aplican a un segundo argumento de tipo entero
+--y retorna una lista de enteros con el resultado de aplicar cada funcion al segundo argumento
+aplicarFuncion :: [Int -> Int] -> Int -> [Int]
+aplicarFuncion fs x = map (\f -> f x) fs
+
+aplicarFuncion' :: [Int -> Int] -> Int -> [Int]
+aplicarFuncion' [] _ = []
+aplicarFuncion' (f:fs) n = f n : aplicarFuncion' fs n
+
+aplicarFuncion'' :: [Int -> Int] -> Int -> [Int]
+aplicarFuncion'' lista n = [f n | f <- lista]
+
+aplicarFuncion''' :: [Int -> Int] -> Int -> [Int]
+aplicarFuncion''' lista n = foldr (\f ac -> [f n] ++ ac) [] lista
