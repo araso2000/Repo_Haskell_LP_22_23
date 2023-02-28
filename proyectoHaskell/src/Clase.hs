@@ -134,3 +134,28 @@ aplicarFuncion'' lista n = [f n | f <- lista]
 
 aplicarFuncion''' :: [Int -> Int] -> Int -> [Int]
 aplicarFuncion''' lista n = foldr (\f ac -> [f n] ++ ac) [] lista
+
+--Definir una funcion dosVeces vista en clase para que sea polimorfica
+dosVeces :: (a -> a) -> a -> a
+dosVeces f x = f (f x)
+
+--Definir una funcion en haskell que dadas dos listas de tuplas de dos elementos de cualquier tipo, retorne una lista
+--de tuplas de tuplas combinando las dos tuplas de la entrada
+mezclar :: [(a,b)] -> [(c,d)] -> [((a,c),(b,d))]
+mezclar [] _ = []
+mezclar _ [] = []
+mezclar ((x1,x2):xs) ((y1,y2):ys) = ((x1,y1),(x2,y2)):mezclar xs ys
+
+--Definir un tipo de datos Alumno utilizando sinónimos de tipos. Suponemos que un alumno se representa mediante el
+--numero de expediente, el DNI y nota numérica
+type NumeroExpediente = Int
+type DNI = String
+type Nota = Double
+
+data Alumno = Alumno DNI NumeroExpediente Nota deriving Show
+
+--Definir una funcion en Haskell que determine si un alumno ha aprobado
+aprobado :: Alumno -> Bool
+aprobado (Alumno _ _ nota) = (nota >= 5.0)
+
+

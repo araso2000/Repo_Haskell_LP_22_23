@@ -30,6 +30,8 @@ library
       T3L1
       T3L2
       T4L1
+      T4L2
+      T4L3
   other-modules:
       Paths_proyectoHaskell
   hs-source-dirs:
