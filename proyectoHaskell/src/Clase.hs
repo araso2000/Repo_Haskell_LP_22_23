@@ -158,4 +158,43 @@ data Alumno = Alumno DNI NumeroExpediente Nota deriving Show
 aprobado :: Alumno -> Bool
 aprobado (Alumno _ _ nota) = (nota >= 5.0)
 
+--Dada una matriz de enteros se quiere saber cual es su tamaño. Crear un tipo de datos nuevo y la funcion que calcule su tamaño
+data Matriz = M [[Int]]
 
+m :: Matriz
+m = M [[1,2,3,8],[3,4,5,6],[1,5,1,7]]
+
+tamMatriz :: Matriz -> (Int, Int)
+tamMatriz (M []) = (0,0)
+tamMatriz (M filas) = (length filas, length (head filas))
+
+--Definir una funcion que dado un precio calcule cual seria el precio final aplicandole el IVA
+--Version con where
+aplicarIva :: Float -> Float
+aplicarIva c = let iva = 1.21 in c * iva
+
+aplicarIva' :: Float -> Float
+aplicarIva' c = c * iva where iva = 1.21
+
+--Definir una funcion en haskell que calcule la longitud de una lista de enteros (sin usar la funcion length)
+--Version con solo una ecuacion
+longitud :: [a] -> Int
+longitud [] = 0 -- caso base: la longitud de la lista vacía es cero
+longitud (x:xs) = 1 + longitud xs -- caso recursivo: la longitud es 1 más la longitud del resto de la lista
+
+--Version con varias ecuaciones de ajuste de patrones
+longitud' :: [Int] -> Int
+longitud' [] = 0 -- Caso base: la longitud de la lista vacía es cero
+longitud' (_:xs) = 1 + longitud' xs -- Caso recursivo: la longitud es 1 más la longitud del resto de la lista
+
+--Version usando CASE
+longitud'' :: [Int] -> Int
+longitud'' xs = case xs of
+                [] -> 0 -- caso base: la longitud de la lista vacía es cero
+                (_:ys) -> 1 + longitud'' ys -- caso recursivo: la longitud es 1 más la longitud del resto de la lista
+
+--NOTACION CURRIFICADA
+--Supongamos maxTres 2 5 1
+--Podemos definirla asi: maximo.maximo 2 -> Faltan 2 valores, ya que no hemos puesto más que el 2
+--En haskell se puede auto colocar los numeros que se introducen. En este caso sería:
+--  maximo 1.maximo 2 5
