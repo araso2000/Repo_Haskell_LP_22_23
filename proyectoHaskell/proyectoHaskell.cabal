@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Clase
+      RepasoParcial
       T3L0
       T3L1
       T3L2
@@ -33,6 +34,8 @@ library
       T4L2
       T4L3
       T5L1
+      T5L2
+      T5L3
   other-modules:
       Paths_proyectoHaskell
   hs-source-dirs:

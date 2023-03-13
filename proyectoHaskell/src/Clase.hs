@@ -198,3 +198,7 @@ longitud'' xs = case xs of
 --Podemos definirla asi: maximo.maximo 2 -> Faltan 2 valores, ya que no hemos puesto más que el 2
 --En haskell se puede auto colocar los numeros que se introducen. En este caso sería:
 --  maximo 1.maximo 2 5
+
+
+
+
