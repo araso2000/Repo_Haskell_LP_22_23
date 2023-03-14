@@ -205,6 +205,252 @@ orderHot (x:xs) = orderHot menores ++ [x] ++ orderHot mayores
           mayores = [y | y <- xs, y > x] 
 
 --Apartado C
+data CasaRural = CR {nomb :: String, espigas :: Int, direccion :: String}
 
+class Impuesto a where
+  calcularImpuesto :: a -> Float
 
+instance Impuesto Hotel where
+  calcularImpuesto (Hot _ e1 _ (Cap i1 d1 t1 s1)) = if (i1+d1+t1+s1) >= 30 && e1 >= 3 then 345.5 else if (i1+d1+t1+s1) >= 30 && e1 < 3 then 225.5 else 150.5
+
+instance Impuesto CasaRural where 
+  calcularImpuesto (CR _ e1 _) = if e1 > 3 then 250.5 else 180.5
+
+--Examen Junio 2022 - Ejercicio 4
+type Day = Int
+type Month = Int
+type Year = Int
+data Date = D Day Month Year
+
+data Noticia = RS {texto :: String , fecha :: Date} | Online {titular :: String, texto :: String, fecha :: Date}
+
+data Gestor = GS {listado :: [Noticia]}
+
+instance Show Date where
+  show (D d m y) = show d ++ "/" ++ show m ++ "/" ++ show y
+
+instance Show Noticia where
+  show (RS c d) = "Contenido: " ++ c ++ " para publicar en red social en la fecha "++ show d
+  show (Online h c d) = "Titular: " ++ h ++" y contenido: " ++ c ++" para publicar en periodico en la fecha "++ show d
+
+instance Show Gestor where
+  show (GS []) = ""
+  show (GS (x:xs)) = show x ++ "\n" ++ show (GS xs) 
+
+n1 :: Noticia 
+n1 = RS "nnnnnn1" (D 15 06 2022) 
+ 
+n2 :: Noticia 
+n2 = RS "nnnnnn2" (D 16 06 2022) 
+ 
+n3 :: Noticia 
+n3 = Online "ttttttt3" "nnnnnnnn3" (D 15 06 2022)
+
+noticias :: [Noticia]
+noticias = [n1,n2,n3]
+
+listadoNoticias :: Gestor
+listadoNoticias = (GS noticias)
+
+coleccion :: Gestor -> String
+coleccion (GS []) = ""
+coleccion (GS (x:xs)) = show(x) ++ coleccion (GS xs)
+
+instance Eq Date where
+  (D d1 m1 y1) == (D d2 m2 y2) = (d1 == d2) && (m1 == m2) && (y1 == y2)
+
+instance Ord Date where
+  compare (D d1 m1 y1) (D d2 m2 y2) = if ((compare y1 y2) == EQ) then
+    (if ((compare m1 m2) == EQ) then compare d1 d2 else compare m1 m2) else compare y1 y2
+
+instance Eq Noticia where 
+    (RS _ d1) == (RS _ d2) = d1 == d2 
+    (Online _ _ d1) == (Online _ _ d2) = d1 == d2 
+    (RS _ d1) == (Online _ _ d2) = d1 == d2 
+    (Online _ _ d1) == (RS _ d2) = d1 == d2 
+ 
+instance Ord Noticia where 
+    compare (RS _ d1) (RS _ d2) = compare d1 d2 
+    compare (Online _ _ d1) (Online _ _ d2) = compare d1 d2 
+    compare (RS _ d1) (Online _ _ d2) = compare d1 d2 
+    compare (Online _ _ d1) (RS _ d2) = compare d1 d2
+
+inserta :: Ord a => a -> [a] -> [a] 
+inserta e [] = [e] 
+inserta e (x:xs) 
+    | e <= x = e:x:xs 
+    | otherwise = x : inserta e xs
+
+--T3-L0-Eje1
+componer :: (Int, Int) -> Int
+componer (a,b) = if cociente >= resto then cociente else resto where
+    cociente = a `div` b
+    resto = a `mod` b
+
+--T3-L0-Eje2
+sucesor :: Int -> Int
+sucesor x = x+1
+
+--T3-L0-Eje3
+cuadruple :: Int -> Int
+cuadruple x = x*4
+
+--T3-L1-Eje1
+ordenadosMenor :: Int -> Int -> Int -> Bool
+ordenadosMenor x y z = if (x <= y) && (y <= z) then True else False
+
+--T3-L1-Eje2
+ordenarTupla :: (Int, Int, Int) -> (Int, Int, Int)
+ordenarTupla (x, y, z)
+  | x <= y && y <= z = (x, y, z)
+  | x <= z && z <= y = (x, z, y)
+  | y <= x && x <= z = (y, x, z)
+  | y <= z && z <= x = (y, z, x)
+  | z <= x && x <= y = (z, x, y)
+  | otherwise = (z, y, x)
+
+--T3-L1-Eje3
+descomponerReal :: Double -> (Int, Double)
+descomponerReal num = (parteEntera, parteFraccionaria)
+  where
+    parteEntera = truncate num
+    parteFraccionaria = abs (num - fromIntegral parteEntera)
+
+--T3-L1-Eje4
+divisores :: Int -> [Int]
+divisores x = [y | y <- [1..x], (x `mod` y) == 0]
+
+--T3-L1-Eje5
+esDigito :: Char -> Bool
+esDigito x
+  | ord x >= 0 && ord x <= 9 = True
+  | otherwise = False
+
+--T3-L1-Eje6
+esPrimo :: Int -> Bool
+esPrimo x = if length(divisores x) <= 2 then True else False
+
+--T3-L1-Eje7
+listaPrimosImpares :: [Int] -> [Int]
+listaPrimosImpares lista = [y | y <- lista, (not (even y)) && (esPrimo y)]
+
+--T3-L1-Eje8
+primosMenorIgual :: Int -> [Int]
+primosMenorIgual num = [y | y <- [1..num], esPrimo y]
+
+--T3-L1-Eje9
+codificacionTuplas :: [(Char,Char)] -> String
+codificacionTuplas lista = [a | (a,b) <- lista, b `elem` "aeiouAEIOU"]
+
+--T3-L1-Eje10
+filtrarTuplas :: [(Int,Int)] -> Int -> [(Int,Int)]
+filtrarTuplas lista n = [(a,b)| (a,b) <- lista, not (even a) && (a > n)]
+
+--T3-L1-Eje11
+cuantasPitagoricas :: [(Int,Int,Int)] -> Int
+cuantasPitagoricas lista = length([(x,y,z) | (x,y,z) <- lista, ((x*x) + (y*y)) == (z*z)])
+
+--T3-L1-Eje12
+esMayuscula :: Char -> Bool
+esMayuscula letra = if letra `elem` "ABCDEFGHIJKLMNOPQRSTUVWXYZ" then True else False
+
+--T3-L1-Eje13
+mayusculasMinusculas :: String -> String
+mayusculasMinusculas cadena = [if (esMayuscula y) then (toLower y) else (toUpper y) | y <- cadena]
+
+--T3-L1-Eje14
+listaASCII :: String -> [Int]
+listaASCII texto = [ord y | y <- texto]
+
+--T3-L1-Eje15
+mensajeLista :: [Int] -> String
+mensajeLista lista = "Primer elemento: " ++ show(head(lista)) ++ ", longitud: " ++ show(length(lista))
+
+--T3-L1-Eje16
+contarMayusculas :: String -> Int
+contarMayusculas texto = length([y | y <- texto, esMayuscula y])
+
+--T3-L2-Eje1
+contarApariciones :: String -> Char -> Int
+contarApariciones texto letra = length([y | y <- texto, y == letra])
+
+--T3-L2-Eje2
+manipula3Tuplas :: ((String,Int),(String,Int),(String,Int)) -> (String,String,String)
+manipula3Tuplas ((a,_),(b,_),(c,_)) = (a,b,c)
+
+--T3-L2-Eje3
+sumaMenor10 :: [Int] -> Bool
+sumaMenor10 (a:b:c:d:xs) = if (a+b+c+d) < 10 then True else False
+
+--T3-L2-Eje4
+puntoCardinal :: Char -> String
+puntoCardinal 'N' = "Norte"
+puntoCardinal 'S' = "Sur"
+puntoCardinal 'E' = "Este"
+puntoCardinal 'O' = "Oeste"
+puntoCardinal otherwise = "El caracter introducido no pertenece a un punto cardinal"
+
+--T3-L2-Eje5
+todosIguales :: Int -> [Int] -> Bool
+todosIguales _ [] = False
+todosIguales num lista = if (length([y | y <- lista, y == num])) == length(lista) then True else False
+
+--T3-L2-Eje6
+mensajeFrase :: String -> String
+mensajeFrase texto = "La primera letra de la frase Ejercicios del Tema 3 es " ++ show(head(texto)) ++ " y la ultima letra es " ++ show(last(texto))
+
+--T3-L2-Eje7
+rangoNumero :: Int -> String
+rangoNumero x =
+  let menor = "El número es menor de 10"
+      entre = "El número está entre 10 y 20"
+      mayor = "El número es mayor de 20"
+  in if x < 10 then menor else if x <= 20 then entre else mayor
+
+--T3-L2-Eje17
+calificacion :: Double -> String
+calificacion x
+  | x < 5 = "Suspenso"
+  | x < 7 = "Aprobado"
+  | x < 9 = "Notable"
+  | x < 10 = "Sobresaliente"
+  | otherwise = "Matrícula de Honor"
+
+--T3-L2-Eje19
+posicionEnLista :: [Int] -> [(Int, Int)]
+posicionEnLista xs = zip xs [0..]
+
+--T3-L2-Eje24
+partir :: Int -> [Int] -> ([Int],[Int])
+partir num lista = (take num lista, drop num lista)
+
+--T3-L2-Eje25
+insertar' :: Int -> Int -> [Int] -> [Int]
+insertar' n p xs = take p xs ++ [n] ++ drop p xs
+
+--T3-L2-Eje27
+listaPotencias :: [Int] -> [Int]
+listaPotencias xs = map (\(x, p) -> x^p) (zip (reverse xs) [0..])
+
+--T4-L1-Eje1
+cribar :: [Int] -> Int -> [Int]
+cribar lista num = [y | y <- lista, not ((y `mod` num) == 0)]
+
+--Recursividad no final
+cribar' :: Int -> [Int] -> [Int]
+cribar' n xs = cribar'Aux n xs []
+    where
+        cribar'Aux n [] acc = acc
+        cribar'Aux n (x:xs) acc
+            | x `mod` n == 0 = cribar'Aux n xs acc
+            | otherwise = cribar'Aux n xs (acc ++ [x])
+
+--Recursividad final o de cola
+cribar'' :: Int -> [Int] -> [Int]
+cribar'' _ [] = []
+cribar'' n (x:xs) = if (x `mod` n) == 0 then cribar'' n xs else x : cribar'' n xs
+
+--T4-L1-Eje2
+ceros :: [Int] -> Int
+ceros [] = 0
 
