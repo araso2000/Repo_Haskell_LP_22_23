@@ -453,4 +453,92 @@ cribar'' n (x:xs) = if (x `mod` n) == 0 then cribar'' n xs else x : cribar'' n x
 --T4-L1-Eje2
 ceros :: [Int] -> Int
 ceros [] = 0
+ceros (x:xs) = if x == 0 then 1 + ceros xs else ceros xs
 
+--T4-L1-Eje3
+repeticiones :: [Int] -> ([Int],[Int])
+repeticiones xs = foldr f ([],[]) xs
+  where 
+    f x (unicos, repetidos)
+      | x `elem` unicos = (unicos, x : repetidos)
+      | otherwise = (x : unicos, repetidos)
+
+--T4-L1-Eje4
+incluye :: [Int] -> [Int] -> Bool
+incluye xs ys = isInfixOf xs ys
+
+--T4-L1-Eje5
+toLista :: Int -> [Int]
+toLista num = map digitToInt (show num)
+
+sumaCifras :: (Int -> [Int]) -> Int -> Int
+sumaCifras _ num = foldr (+) 0 (toLista num)
+
+--T4-L1-Eje6
+contieneCifra :: (Int -> [Int]) -> Int -> Int -> Bool
+contieneCifra _ n cifra = if cifra `elem` (toLista n) then True else False
+
+--T4-L1-Eje7
+fromLista :: [Int] -> Int
+fromLista = foldl (\acc d -> 10*acc + d) 0
+
+invertir :: (Int -> [Int]) -> ([Int] -> Int) -> Int ->  Int
+invertir _ _ n = fromLista (reverse (toLista n))
+
+--T4-L1-Eje8
+eliminarUltimos :: Int -> [Int] -> [Int]
+eliminarUltimos n xs = take (length xs - n) xs
+
+--Recursividad no final
+eliminarUltimos'' :: Int -> [Int] -> [Int]
+eliminarUltimos'' n xs = aux xs (length xs - n)
+  where 
+    aux [] _ = []
+    aux (y:ys) k
+      | k > 0 = y : aux ys (k-1)
+      | otherwise = []
+
+--Recursividad final
+eliminarUltimos' :: Int -> [Int] -> [Int]
+eliminarUltimos' _ [] = []
+eliminarUltimos' n (x:xs) =  if length(eliminarUltimos' n xs) < (length(xs)+1 - n) then x : eliminarUltimos' n xs else []
+
+--T4-L1-Eje9
+listaOrdenada :: [Int] -> Bool
+listaOrdenada [] = True
+listaOrdenada [x] = True
+listaOrdenada (x1:x2:xs) = if x1 <= x2 then listaOrdenada (x2:xs) else False
+
+--T4-L2-Eje2
+sumaDobles :: [Int] -> Int
+sumaDobles [] = 0
+sumaDobles (x:xs) = x*2 + sumaDobles xs
+
+sumaDobles' :: [Int] -> Int
+sumaDobles' xs = foldr (+) 0 (map (\x -> x*2) xs)
+
+--T4-L2-Eje3
+sumaCuadradosPares :: [Int] -> Int
+sumaCuadradosPares xs = foldr (+) 0 (map (\x -> x*x) (filter even xs))
+
+sumaCuadradosPares' :: [Int] -> Int
+sumaCuadradosPares' xs = foldr (+) 0 [y*y | y <- xs, even y]
+
+--T4-L2-Eje4
+eliminaValor :: Int -> [Int] -> [Int]
+eliminaValor n xs = foldr (\x acu -> if x /= n then x : acu else acu) [] xs
+
+--T4-L2-Eje5
+eliminaDuplicados :: [Int] -> [Int]
+eliminaDuplicados xs = foldr (\x acu -> if x `elem` acu then acu else x : acu) [] xs
+
+eliminaDuplicados' :: [Int] -> [Int]
+eliminaDuplicados' xs = foldl (\acu x -> if x `elem` acu then acu else x : acu) [] xs
+
+--T4-L2-Eje6
+listaPrimos :: [Int] -> [Int]
+listaPrimos [] = []
+listaPrimos (x:xs) = if esPrimo x then x : listaPrimos xs else listaPrimos xs
+
+listaPrimos' :: [Int] -> [Int]
+listaPrimos' xs = filter esPrimo xs
