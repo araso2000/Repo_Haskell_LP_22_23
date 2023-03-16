@@ -123,10 +123,10 @@ listaLib = [lib1,lib2,lib3,lib4,lib5,lib6]
 data Arbol a = AV | Rama (Arbol a) a (Arbol a)
 
 insertar :: Ord a => a -> Arbol a -> Arbol a
-insertar x AV = Rama AV x AV  -- Caso base: si el árbol es vacío, creamos un nuevo nodo con el valor x
+insertar x AV = Rama AV x AV 
 insertar x (Rama izq y der)
-  | x < y     = Rama (insertar x izq) y der  -- Si x es menor que la raíz, insertamos en el subárbol izquierdo
-  | otherwise = Rama izq y (insertar x der)  -- Si x es mayor o igual que la raíz, insertamos en el subárbol derecho
+  | x < y     = Rama (insertar x izq) y der
+  | otherwise = Rama izq y (insertar x der)
 
 --Repaso 3 - Ejercicio 2
 dobleTupla :: String -> (String, String)
@@ -135,11 +135,10 @@ dobleTupla palabra = (vocales,(filter (\c -> notElem c vocales) palabra))
 
 --Repaso 3 - Ejercicio 3
 separarPorPosicion :: [a] -> ([a], [a])
-separarPorPosicion [] = ([], [])    -- caso base: lista vacía
-separarPorPosicion [x] = ([x], []) -- caso base: lista con un solo elemento
-separarPorPosicion (x:y:xs) =      -- caso recursivo: lista con al menos dos elementos
-  let (pares, impares) = separarPorPosicion xs
-  in (x:pares, y:impares)
+separarPorPosicion xs = (pares, impares)
+  where
+    pares = [ x | (x, y) <- zip xs [1..], even y]
+    impares = [ x | (x, y) <- zip xs [1..], odd y]
 
 
 --Examen Marzo 2022 - Ejercicio 2
@@ -283,7 +282,8 @@ inserta e (x:xs)
 
 --T3-L0-Eje1
 componer :: (Int, Int) -> Int
-componer (a,b) = if cociente >= resto then cociente else resto where
+componer (a,b) = if cociente >= resto then cociente else resto 
+  where
     cociente = a `div` b
     resto = a `mod` b
 
@@ -542,3 +542,34 @@ listaPrimos (x:xs) = if esPrimo x then x : listaPrimos xs else listaPrimos xs
 
 listaPrimos' :: [Int] -> [Int]
 listaPrimos' xs = filter esPrimo xs
+
+--T4-L3-Eje1
+mezclarEnTernas :: [a] -> [b] -> [(a,b,b)]
+mezclarEnTernas [] _ = []
+mezclarEnTernas _ [] = []
+mezclarEnTernas (x:xs) (y1:y2:ys) = (x, y1, y2) : mezclarEnTernas xs ys
+
+--T4-L3-Eje2
+alFinal :: a -> [a] -> [a]
+alFinal x [] = [x]
+alFinal x (y:ys) = y : alFinal x ys
+
+alFinal' :: a -> [a] -> [a]
+alFinal' x xs = foldr (\y ys -> y : ys) [x] xs
+
+--T4-L3-Eje3
+cogeMientras :: Eq a => (a -> Bool) -> [a] -> [a]
+cogeMientras _ [] = []
+cogeMientras f (x:xs) = if (f x) && not (x `elem` cogeMientras f xs) then x : cogeMientras f xs else cogeMientras f xs
+
+--T4-L3-Eje4
+posicionesElem :: Eq a => (a, [a]) -> [Int]
+posicionesElem (x, xs) = fst $ foldl (\(acu, i) y -> if y == x then (i:acu, i+1) else (acu, i+1)) ([],0) xs
+
+--T4-L3-Eje5
+contiene :: Eq a => a -> [a] -> Bool
+contiene x xs = foldr (\y acu -> x == y || acu) False xs
+
+contiene' :: Eq a => a -> [a] -> Bool
+contiene' x xs = foldl (\acu y -> x == y || acu) False xs 
+
