@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Clase
+      Examen
       RepasoParcial
       T3L0
       T3L1
